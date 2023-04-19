@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import GoogleButton from 'react-google-button'
-import {getAuth, GoogleAuthProvider} from "firebase/auth";
+import {getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult} from "firebase/auth";
 import {useRouter} from "next/router";
 import { initializeApp } from 'firebase/app';
 
@@ -11,12 +11,12 @@ const firebaseConfig = {
   // Enter your own firebase config here
 };
 
-// const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 // GoogleAuthProvider instance
-// const provider = new GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
 // Firebase Auth instance
-// const auth = getAuth(app);
+const auth = getAuth(app);
 
 export default function Home() {
   //Next.js router
@@ -25,13 +25,17 @@ export default function Home() {
   // Task 1: Implement Google Sign in with Firebase
   // https://firebase.google.com/docs/auth/web/google-signin
   const signIn = () => {
-    /*
-      1. Use the GoogleAuthProvider to sign in with Firebase
-      2. Use signInWithRedirect to redirect the user to the Google sign in page
-      3. (Optional) Use getRedirectResult to get the result of the redirect and check out what is inside :)
-      4. Redirect the user to the signed-in page using Next.js router
-     */
-
+    signInWithRedirect(auth, provider)
+      .then(() => {
+        return getRedirectResult(auth);
+      })
+      .then((result) => {
+        console.log(result);
+        router.push('/signed-in');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (
@@ -57,6 +61,6 @@ export default function Home() {
           />
         </main>
       </div>
-      </>
+    </>
   )
 }
