@@ -9,6 +9,13 @@ import { initializeApp } from 'firebase/app';
 // https://firebase.google.com/docs/web/setup
 const firebaseConfig = {
   // Enter your own firebase config here
+  apiKey: "AIzaSyDAnJMMUNae8ZiVnlPMxyrrNZDa8zfVPfg",
+  authDomain: "checkmate-jokes.firebaseapp.com",
+  projectId: "checkmate-jokes",
+  storageBucket: "checkmate-jokes.appspot.com",
+  messagingSenderId: "906256796436",
+  appId: "1:906256796436:web:f5340edb67163754e45001",
+  measurementId: "G-58QCV9ZC6L"
 };
 
 const app = initializeApp(firebaseConfig);
