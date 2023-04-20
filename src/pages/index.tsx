@@ -3,6 +3,7 @@ import GoogleButton from 'react-google-button'
 import {getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult} from "firebase/auth";
 import {useRouter} from "next/router";
 import { initializeApp } from 'firebase/app';
+import { useEffect } from 'react';
 
 // Task 0: Initialize Firebase
 // Replace the following with your app's Firebase project configuration
@@ -32,18 +33,26 @@ export default function Home() {
   // Task 1: Implement Google Sign in with Firebase
   // https://firebase.google.com/docs/auth/web/google-signin
   const signIn = () => {
-    signInWithRedirect(auth, provider)
-      .then(() => {
-        return getRedirectResult(auth);
-      })
-      .then((result) => {
-        console.log(result);
-        router.push('/signed-in');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+    signInWithRedirect(auth, provider);
+  };
+
+  useEffect(() => {
+    const handleRedirectResult = () => {
+      getRedirectResult(auth)
+        .then((result) => {
+          if (result.user) {
+            console.log(result);
+            router.push('/signed-in');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    handleRedirectResult();
+  }, [router, auth]);
+  
 
   return (
     <>
